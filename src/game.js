@@ -57,6 +57,39 @@ export default class Game {
     }
   }
 
+  rotatePiece() {
+    this.rotateBlocks();
+
+    if (this.hasCollision()){
+      this.rotateBlocks(false);
+    }
+  }
+
+  rotateBlocks(clockwise = true){
+    const blocks = this.activePiece.blocks;
+    const length = blocks.length;
+    const x = Math.floor(length / 2);
+    const y = length - 1;
+
+    for (let i = 0; i < x; i++) {
+      for (let j = i; j < y - i; j++) {
+        let temp = blocks[i][j];
+
+        if (clockwise) {
+          blocks[i][j] = blocks[y - j][i];
+          blocks[y - j][i] = blocks[y - i][y - j];
+          blocks[y - i][y - j] = blocks[j][y - i]
+          blocks[j][y - i] = temp;
+        } else {
+          blocks[i][j] = blocks[j][y - i];
+          blocks[j][y-i] = blocks[y - i][y - j];
+          blocks[y - i][y - j] = blocks[y - j][i];
+          blocks[y - j][i] = temp;
+        }
+      }
+    }
+  }
+
   hasCollision() {
     const { x: pieceX, y: pieceY, blocks } = this.activePiece;
 
@@ -64,8 +97,8 @@ export default class Game {
       for (let x = 0; x < blocks[y].length; x++) {
         if (
           blocks[y][x] &&
-            ((this.playfield[pieceY + y] === undefined ||
-            this.playfield[pieceY + y][pieceX + x] === undefined) ||
+          (this.playfield[pieceY + y] === undefined ||
+            this.playfield[pieceY + y][pieceX + x] === undefined ||
             this.playfield[pieceY + y][pieceX + x])
         )
           return true;
