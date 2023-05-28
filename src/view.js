@@ -1,4 +1,14 @@
 export default class View {
+  static colors = {
+    1: "#fafa69",
+    2: "#ff852e",
+    3: "#ff3636",
+    4: "#72ff67",
+    5: "#00ffc7",
+    6: "#ff3c80",
+    7: "#9753ff",
+  };
+
   constructor(element, width, height, rows, columns) {
     this.element = element;
     this.width = width;
@@ -50,7 +60,7 @@ export default class View {
             y * this.blockHeight,
             this.blockWidth,
             this.blockHeight,
-              "red"
+            View.colors[block]
           );
         }
       }
