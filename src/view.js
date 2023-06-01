@@ -54,7 +54,19 @@ export default class View {
     this.context.fillText(
       "Press ENTER to Start",
       this.width / 2,
-      this.height / 2
+      this.height / 2 - 100
+    );
+    this.context.font = '15px "Press Start 2P"';
+    this.context.fillText(
+      "A S D to move",
+      this.width / 2,
+      this.height / 2 - 50
+    );
+
+    this.context.fillText(
+      "Space to rotate",
+      this.width / 2,
+      this.height / 2 - 15
     );
   }
 
@@ -63,7 +75,7 @@ export default class View {
     this.context.fillRect(0, 0, this.width, this.height);
 
     this.context.fillStyle = "white";
-    this.context.font = '16px "Press Start 2P"';
+    this.context.font = '18px "Press Start 2P"';
     this.context.textAlign = "center";
     this.context.textBaseline = "middle";
     this.context.fillText("PAUSE", this.width / 2, this.height / 2 - 48);

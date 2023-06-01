@@ -5,15 +5,8 @@ export default class Controller {
     this.intervalId = null;
     this.isPlaying = false;
 
-    this.intervalId = setInterval(() => {
-      this.update();
-    }, 1000);
-
-    // view.on('keypress', this._handleKeyPress.bind(this));
-    // view.on('keydown', this._handleKeyDown.bind(this));
-    // view.on('keyup', this._handleKeyUp.bind(this));
-
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    document.addEventListener("keyup", this.handleKeyUp.bind(this));
 
     this.view.renderStartScreen();
   }
@@ -35,19 +28,21 @@ export default class Controller {
     this.updateView();
   }
 
-  updateView() {
-    this.view.renderMainScreen(this.game.getState());
+  reset() {
+    this.game.reset();
+    this.play();
+  }
 
-    // const state = this.game.state;
-    //
-    // if (state.isGameOver) {
-    //     this.view.renderEndScreen(state);
-    // } else 
-      if (!this.isPlaying) {
-        this.view.renderPauseScreen();
-      } else {
-        this.view.renderMainScreen(this.game.getState());
-      }
+  updateView() {
+    const state = this.game.getState();
+
+    if (state.isGameOver) {
+      this.view.renderEndScreen(state);
+    } else if (!this.isPlaying) {
+      this.view.renderPauseScreen();
+    } else {
+      this.view.renderMainScreen(state);
+    }
   }
 
   startTimer() {
@@ -71,31 +66,47 @@ export default class Controller {
   }
 
   handleKeyDown(event) {
+    const state = this.game.getState();
+
     switch (event.code) {
       case "Enter":
-        if (this.isPlaying) {
+        if (state.isGameOver) {
+          this.reset();
+        } else if (this.isPlaying) {
           this.pause();
         } else {
           this.play();
         }
         break;
       case "KeyA":
+        if (!this.isPlaying) break;
         this.game.movePieceLeft();
-        this.view.renderMainScreen(this.game.getState());
+        this.updateView();
         break;
       case "Space":
+        if (!this.isPlaying) break;
         this.game.rotatePiece();
-        this.view.renderMainScreen(this.game.getState());
+        this.updateView();
         break;
       case "KeyD":
+        if (!this.isPlaying) break;
         this.game.movePieceRight();
-        this.view.renderMainScreen(this.game.getState());
-
+        this.updateView();
         break;
       case "KeyS":
+        if (!this.isPlaying) break;
+        this.stopTimer();
         this.game.movePieceDown();
-        this.view.renderMainScreen(this.game.getState());
+        this.updateView();
+        break;
+    }
+  }
 
+  handleKeyUp(event) {
+    switch (event.code) {
+      case "KeyS":
+        if (!this.isPlaying) break;
+        this.startTimer();
         break;
     }
   }
