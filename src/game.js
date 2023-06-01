@@ -1,10 +1,10 @@
 export default class Game {
-  static points ={
-    "1": 40,
-    "2": 100,
-    "3": 300,
-    "4": 1200,
-  }
+  static points = {
+    1: 40,
+    2: 100,
+    3: 300,
+    4: 1200,
+  };
 
   score = 0;
   lines = 0;
@@ -12,8 +12,8 @@ export default class Game {
   activePiece = this.createPiece();
   nextPiece = this.createPiece();
 
-  get level(){
-      return Math.floor(this.lines * 0.1);
+  get level() {
+    return Math.floor(this.lines * 0.1);
   }
 
   getState() {
@@ -37,6 +37,10 @@ export default class Game {
     }
 
     return {
+      score: this.score,
+      level: this.level,
+      lines: this.lines,
+      nextPiece: this.nextPiece,
       playfield,
     };
   }
@@ -144,7 +148,7 @@ export default class Game {
       this.activePiece.y -= 1;
       this.lockPiece();
       const clearedLines = this.clearLines();
-      this.updateScore(clearedLines)
+      this.updateScore(clearedLines);
       this.updatePieces();
     }
   }
@@ -243,13 +247,11 @@ export default class Game {
     return lines.length;
   }
 
-  updateScore(clearedLines){
-      if(clearedLines>0){
-        this.score += Game.points[clearedLines] * (this.level + 1);
-        this.lines += clearedLines;
-
-        console.log(this.score, this.lines);
-      }
+  updateScore(clearedLines) {
+    if (clearedLines > 0) {
+      this.score += Game.points[clearedLines] * (this.level + 1);
+      this.lines += clearedLines;
+    }
   }
 
   updatePieces() {
