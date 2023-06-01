@@ -13,23 +13,21 @@ document.addEventListener("keydown", (e) => {
   switch (e.code) {
     case "KeyA":
       game.movePieceLeft();
-      view.render(game.getState());
+      view.renderMainScreen(game.getState());
       break;
     case "Space":
       game.rotatePiece();
-      view.render(game.getState());
+      view.renderMainScreen(game.getState());
       break;
     case "KeyD":
       game.movePieceRight();
-      view.render(game.getState());
+      view.renderMainScreen(game.getState());
 
       break;
     case "KeyS":
       game.movePieceDown();
-      view.render(game.getState());
+      view.renderMainScreen(game.getState());
 
       break;
   }
 });
-
-view.render(game.getState());
